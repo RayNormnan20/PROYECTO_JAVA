@@ -1,0 +1,44 @@
+CREATE SCHEMA proyecto;
+USE proyecto;
+
+CREATE TABLE productos_base (
+  idPro INT AUTO_INCREMENT PRIMARY KEY,
+  nombre varchar (50),
+  idElectronicos INT,
+  idAlimenti INT,
+  descrip VARCHAR(50),
+  precio FLOAT(10,2),
+  stock INT,
+  CONSTRAINT relac_prod_elec FOREIGN KEY (idElectronicos) REFERENCES productos_electronicos(idPro),
+  CONSTRAINT relac_prod_alim FOREIGN KEY (idAlimenti) REFERENCES productos_alimenticios(idProAli)
+);
+CREATE TABLE productos_electronicos (
+  idPro INT AUTO_INCREMENT PRIMARY KEY,
+  modelo VARCHAR(50),
+  potencia INT
+);
+CREATE TABLE productos_alimenticios (
+  idProAli INT AUTO_INCREMENT PRIMARY KEY,
+  fecha_vencimiento varchar(12),
+  pais_origen VARCHAR(50)
+);
+CREATE TABLE clientes (
+  idCliente INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(50),
+  apellido VARCHAR(50),
+  correo VARCHAR(50),
+  direccion VARCHAR(100)
+);
+CREATE TABLE facturas (
+  idFactura INT AUTO_INCREMENT PRIMARY KEY,
+  fecha varchar(12),
+  idCliente INT,
+  idProducto INT,
+  cantidad INT,
+  precioUnitario FLOAT(10,2),
+  subtotal FLOAT(10,2),
+  igv FLOAT(10,2),
+  total FLOAT(10,2),
+  CONSTRAINT relac_fact_cliente FOREIGN KEY (idCliente) REFERENCES clientes (idCliente),
+  CONSTRAINT relac_fact_producto FOREIGN KEY (idProducto) REFERENCES productos_base (idPro)
+);
