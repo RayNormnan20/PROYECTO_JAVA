@@ -1,5 +1,10 @@
 package PROYECTO;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
 /**
  *
  * @author Lenovo
@@ -99,4 +104,36 @@ public class Factura {
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
+    public static void listaFacturaVentas(ResultSet rs, Statement stmt, Scanner entrada) {
+        try {
+            rs = stmt.executeQuery("SELECT * FROM facturas");
+            System.out.println("");
+            System.out.println("==================FACTURA DE LA VENTA REALIZADA===================");
+            System.out.println("ID\tFecha\t\tidCli\tidPro\tcantidad \tprecioUni\tsubtotal \tigv\ttotal");
+            System.out.println("");
+
+            // Iterar sobre los resultados de la consulta
+            while (rs.next()) {
+                int idFactura = rs.getInt("idFactura");
+                String fecha = rs.getString("fecha");
+                int idCliente = rs.getInt("idCliente");
+                int idProducto = rs.getInt("idProducto");
+                int cantidad = rs.getInt("cantidad");
+                float precioUnitario = rs.getFloat("precioUnitario");
+                float subtotal = rs.getFloat("subtotal");
+                float igv = rs.getFloat("igv");
+                float total = rs.getFloat("total");
+
+                System.out.println(idFactura + "\t" + fecha + "\t" + idCliente
+                        + "\t" + idProducto + "\t" + cantidad + "\t\t" + precioUnitario + "\t\t" + subtotal + "\t\t" + igv + "\t" + total);
+            }
+        } catch (SQLException sqlEx) {
+            System.out.println("Error al obtener el listado de productos alimenticios: " + sqlEx.getMessage());
+            System.out.println("SQLState: " + sqlEx.getSQLState());
+            System.out.println("VendedorError" + sqlEx.getErrorCode());
+            System.out.println("SQLState: " + sqlEx.getSQLState());
+            System.out.println("VendedorError" + sqlEx.getErrorCode());
+        }
+    }
+    
 }
