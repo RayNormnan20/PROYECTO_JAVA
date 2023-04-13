@@ -72,7 +72,7 @@ public class main {
                             System.out.println("2. Resgitrar Alimenticios");
                             System.out.println("3. Registro Productos Generales");
                             System.out.println("4. Registrar Clientes");
-                            System.out.println("5. Regresar al Menú Principal");
+                            System.out.println("5. Regresar al Menu Principal");
                             System.out.print("Ingrese la opcion deseada: ");
                             opcion2 = entrada.nextInt();
                             entrada.nextLine();

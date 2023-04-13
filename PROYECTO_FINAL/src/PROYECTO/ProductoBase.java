@@ -74,6 +74,7 @@ public class ProductoBase {
         this.stock = stock;
     }
 
+    /*========================================TODO SOBLE LA TABLA GENERAL PRODUCTOS===================================================================*/
     public static void actualizarProductoBase(Connection conn, ResultSet rs, Statement stmt, Scanner entrada) {
         try {
             PreparedStatement ps;
@@ -175,5 +176,4 @@ public class ProductoBase {
         }
     }
 
-    /*========================================TODO SOBLE LA TABLA GENERAL PRODUCTOS===================================================================*/
 }
