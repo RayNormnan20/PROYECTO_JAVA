@@ -1,6 +1,6 @@
 package PROYECTO;
 
-import PROYECTO.Venta;
+import PROYECTO.ventas;
 import PROYECTO.Cliente;
 import PROYECTO.Persona;
 import java.sql.Connection;
@@ -34,7 +34,7 @@ public class main {
 
     public static void main(String[] args) throws ParseException, SQLException {
 
-        Venta ventas = new Venta();
+        ventas ventas = new ventas();
 
         int opcion1 = 0, opcion2 = 0, opcion3 = 0, opcion4 = 0;
         Scanner entrada = new Scanner(System.in);
@@ -50,13 +50,15 @@ public class main {
             stmt = conn.createStatement();
 
             //List<Producto> pro = new ArrayList<>();
-            while (opcion1 != 4) {
+            while (opcion1 != 6) {
                 System.out.println("");
                 System.out.println("======= MENU =======");
                 System.out.println("1. Registro de Datos");
                 System.out.println("2. Hacer una venta");
                 System.out.println("3. Listar ventas");
-                System.out.println("4. Salir");
+                System.out.println("4. Buscar Factura");
+                System.out.println("5. Listar Todo");
+                System.out.println("5. Salir");
                 System.out.print("Ingrese la opcion deseada: ");
                 opcion1 = entrada.nextInt();
                 entrada.nextLine();
@@ -296,10 +298,19 @@ public class main {
                     case 3:
                         Factura.listaFacturaVentas(rs, stmt, entrada);
                         break;
-                    case 4:
+                    case 4: 
+                        Factura.buscarFactura(rs, stmt, entrada);
+                        break;
+                    case 5:
+                        ventas.listarTodo(rs, stmt);
+                        break;
+                    case 6:
                         System.out.println("");
                         System.out.println("¡Gracias por usar nuestro programa!\n¡Te deseamos lo mejor!");
-                        System.exit(0);
+                        
+                        //Salida del sistema
+                       // System.exit(0);
+                        break;
 
                     default:
                         System.out.println("Opcion incorrecta");

@@ -104,6 +104,7 @@ public class Factura {
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
+
     public static void listaFacturaVentas(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
             rs = stmt.executeQuery("SELECT * FROM facturas");
@@ -135,5 +136,42 @@ public class Factura {
             System.out.println("VendedorError" + sqlEx.getErrorCode());
         }
     }
-    
+
+    public static void buscarFactura(ResultSet rs, Statement stmt, Scanner entrada) {
+        try {
+            System.out.println("Ingrese el ID de la factura que desea buscar:");
+            int idFactura = entrada.nextInt();
+
+            String query = "SELECT * FROM facturas WHERE idFactura = " + idFactura;
+            rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                System.out.println("");
+                System.out.println("==================FACTURA DE LA VENTA REALIZADA===================");
+                System.out.println("ID\tFecha\t\tidCli\tidPro\tcantidad \tprecioUni\tsubtotal \tigv\ttotal");
+                System.out.println("");
+
+                String fecha = rs.getString("fecha");
+                int idCliente = rs.getInt("idCliente");
+                int idProducto = rs.getInt("idProducto");
+                int cantidad = rs.getInt("cantidad");
+                float precioUnitario = rs.getFloat("precioUnitario");
+                float subtotal = rs.getFloat("subtotal");
+                float igv = rs.getFloat("igv");
+                float total = rs.getFloat("total");
+
+                System.out.println(idFactura + "\t" + fecha + "\t" + idCliente
+                        + "\t" + idProducto + "\t" + cantidad + "\t\t" + precioUnitario + "\t\t" + subtotal + "\t\t" + igv + "\t" + total);
+            } else {
+                System.out.println("No se encontró ninguna factura con el ID ingresado.");
+            }
+        } catch (SQLException sqlEx) {
+            System.out.println("Error al buscar la factura: " + sqlEx.getMessage());
+            System.out.println("SQLState: " + sqlEx.getSQLState());
+            System.out.println("VendedorError" + sqlEx.getErrorCode());
+            System.out.println("SQLState: " + sqlEx.getSQLState());
+            System.out.println("VendedorError" + sqlEx.getErrorCode());
+        }
+    }
+
 }

@@ -1,4 +1,3 @@
-
 package PROYECTO;
 
 /**
@@ -10,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class Venta {
+public class ventas {
 
     public void hacerVenta(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
@@ -54,7 +53,7 @@ public class Venta {
                 stmt.executeUpdate("INSERT INTO facturas (fecha, idCliente, idProducto, cantidad, precioUnitario, subtotal, igv, total) "
                         + "SELECT '" + fecha + "', " + idCliente + ", " + idProducto + ", " + cantidad + ", precio, " + subtotal + ", " + igv + ", " + total
                         + " FROM productos_base WHERE idPro = " + idProducto);
-                
+
                 System.out.println("");
                 System.out.println("Venta realizada correctamente.");
             } else {
@@ -66,4 +65,38 @@ public class Venta {
             System.out.println("VendedorError" + sqlEx.getErrorCode());
         }
     }
+
+    public void listarTodo(ResultSet rs, Statement stmt) {
+        try {
+            System.out.println("\nListado Completo de las Tablas");
+            System.out.println("--------------------------------");
+
+            rs = stmt.executeQuery("SELECT p.idPro, p.nombre, e.modelo, e.potencia, a.fecha_vencimiento, a.pais_origen, p.descrip, p.precio, p.stock FROM productos_base p INNER JOIN productos_electronicos e ON p.idElectronicos = e.idPro INNER JOIN productos_alimenticios a ON p.idAlimenti = a.idProAli");
+
+            System.out.println("ID\tNombre\t\tModelo\t\tPotencia\t\tFecha de Vencimiento\tPais de Origen\tDescripcion\tPrecio\tStock");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+
+            while (rs.next()) {
+
+                int idPro = rs.getInt("idPro");
+                String nombre = rs.getString("nombre");
+                String modelo = rs.getString("modelo");
+                double potencia = rs.getDouble("potencia");
+                String fecha_vencimiento = rs.getString("fecha_vencimiento");
+                String pais_origen = rs.getString("pais_origen");
+                String descrip = rs.getString("descrip");
+                double precio = rs.getDouble("precio");
+                int stock = rs.getInt("stock");
+
+                // Imprimir los valores de las columnas
+                System.out.println(idPro + "\t" + nombre + "\t\t" + modelo + "\t\t" + potencia + "\t\t" + fecha_vencimiento + "\t\t" + pais_origen + "\t\t" + descrip + "\t\t" + precio + "\t" + stock);
+            }
+            System.out.println("Found a record!");
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendedorError" + ex.getErrorCode());
+        }
+    }
+
 }
