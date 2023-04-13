@@ -4,6 +4,7 @@ import static PROYECTO.main.cliNuevo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -40,16 +41,18 @@ public class Cliente extends Persona {
     /*========================================TODO SOBLE LA TABLA GENERAL CLIENTES======================================================================*/
     public static void registrarClientes(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
+            entrada.nextLine();
             System.out.print("Ingrese el nombre del cliente: ");
-            String nombre = entrada.next();
+            String nombre = entrada.nextLine();
             System.out.print("Ingrese apellido del cliente: ");
-            String apellido = entrada.next();
+            String apellido = entrada.nextLine();
             System.out.print("Ingrese correo del cliente: ");
-            String correo = entrada.next();
+            String correo = entrada.nextLine();
             System.out.print("Ingrese la dirección del cliente: ");
-            String direccion = entrada.next();
+            String direccion = entrada.nextLine();
 
             Cliente cli = new Cliente(nombre, apellido, correo, direccion);
+            
             stmt.executeUpdate("INSERT INTO clientes (nombre, apellido, correo, direccion) values ('"
                     + cli.getNombre() + "', '" + cli.getApellido() + "', '"
                     + cli.getCorreo() + "', '" + cli.getDireccion() + "')");
