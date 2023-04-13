@@ -42,10 +42,11 @@ public class ProductosAlimenticios {
     /*========================================TODO SOBLE LA TABLA GENERAL ALIMENTICIOS===================================================================*/
     public static void registrarAlimenticios(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
-            System.out.println("Ingrese la fecha de vencimiento del producto (en formato DD/MM/YYYY): ");
-            String fechaVencimiento = entrada.next();
 
-            System.out.println("Ingrese el país de origen del producto: ");
+            System.out.print("Ingrese la fecha de vencimiento (en formato YYYY-MM-DD): ");
+            String fechaVencimiento = entrada.next();
+            entrada.nextLine();
+            System.out.print("Ingrese el país de origen del producto: ");
             String paisOrigen = entrada.nextLine();
 
             ProductosAlimenticios proAlimen = new ProductosAlimenticios(fechaVencimiento, paisOrigen);
@@ -99,7 +100,7 @@ public class ProductosAlimenticios {
             ProductosAlimenticios proAlimen = new ProductosAlimenticios(fechaVencimiento, paisOrigen);
 
             stmt.executeUpdate("UPDATE productos_alimenticios SET fecha_vencimiento = '" + proAlimen.getFechaVencimiento()
-                    + "', pais_origen = '" + proAlimen.getPaisOrigen() + "' WHERE id = '" + idProAli + "'");
+                    + "', pais_origen = '" + proAlimen.getPaisOrigen() + "' WHERE idProAli = '" + idProAli + "'");
 
             System.out.println("Producto actualizado correctamente.");
         } catch (SQLException sqlEx) {

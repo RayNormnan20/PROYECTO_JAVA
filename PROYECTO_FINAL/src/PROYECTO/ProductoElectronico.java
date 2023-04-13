@@ -41,9 +41,9 @@ public class ProductoElectronico {
     /*========================================TODO SOBLE LA TABLA GENERAL ELECTRONICOS===================================================================*/
     public static void registrarElectronicos(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
-            System.out.println("Ingrese modelo del producto electrónico: ");
+            System.out.print("Ingrese modelo del producto electrónico: ");
             String modelo = entrada.next();
-            System.out.println("Ingrese la potencia del producto: ");
+            System.out.print("Ingrese la potencia del producto: ");
             int potencia = entrada.nextInt();
             entrada.nextLine(); // Consume el salto de línea pendiente
 
@@ -114,7 +114,7 @@ public class ProductoElectronico {
 
     public static void actualizarProductoElectronico(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
-            System.out.println("Ingrese el ID del producto electrónico a actualizar: ");
+            System.out.print("Ingrese el ID del producto electrónico a actualizar: ");
             int idPro = entrada.nextInt();
             entrada.nextLine();
 
@@ -123,12 +123,13 @@ public class ProductoElectronico {
                 System.out.println("No se encontró ningún cliente con el ID ingresado.");
                 return;
             }
-            System.out.println("Ingrese el nuevo modelo del producto electrónico: ");
+            System.out.print("Ingrese el nuevo modelo del producto electrónico: ");
             String modelo = entrada.nextLine();
 
-            System.out.println("Ingrese la nueva potencia del producto electronico: ");
-            int potencia = entrada.nextInt();
             entrada.nextLine();
+            System.out.print("Ingrese la nueva potencia del producto electronico: ");
+            int potencia = entrada.nextInt();
+            
 
             ProductoElectronico proElec = new ProductoElectronico(modelo, potencia);
             stmt.executeUpdate("UPDATE productos_electronicos SET modelo = '" + proElec.getModelo()
