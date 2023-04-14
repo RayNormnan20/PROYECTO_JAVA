@@ -99,7 +99,7 @@ public class ProductoBase {
             int stock = entrada.nextInt();
             entrada.nextLine();
 
-            // Verificar si el producto es electrónico
+            // Verificar si el producto es electr...
             ps = conn.prepareStatement("SELECT idElectronicos FROM productos_base WHERE idPro = ?");
             ps.setInt(1, idPro);
             rs = ps.executeQuery();

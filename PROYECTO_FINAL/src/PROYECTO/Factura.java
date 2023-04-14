@@ -5,6 +5,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
+
 /**
  *
  * @author Lenovo
@@ -111,7 +119,7 @@ public class Factura {
             System.out.println("");
             System.out.println("==================FACTURA DE LA VENTA REALIZADA===================");
             System.out.println("ID\tFecha\t\tidCli\tidPro\tcantidad \tprecioUni\tsubtotal \tigv\ttotal");
-            System.out.println("");
+            
 
             // Iterar sobre los resultados de la consulta
             while (rs.next()) {
@@ -171,6 +179,39 @@ public class Factura {
             System.out.println("VendedorError" + sqlEx.getErrorCode());
             System.out.println("SQLState: " + sqlEx.getSQLState());
             System.out.println("VendedorError" + sqlEx.getErrorCode());
+        }
+    }
+
+    public class ReporteActores {
+
+        public static void generarReporte() {
+            Connection conn = null;
+            try {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto?"
+                        + "user=root&password=12345678");
+                JasperPrint jasperPrint = JasperFillManager.fillReport(
+                        "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\Factura.jasper",
+                        null, conn);
+                JasperViewer jasperViewer = new JasperViewer(jasperPrint);
+                jasperViewer.setVisible(true);
+
+            } catch (SQLException ex) {
+                System.out.println("SQLException: " + ex.getMessage());
+                System.out.println("SQLState: " + ex.getSQLState());
+                System.out.println("VendedorError" + ex.getErrorCode());
+
+            } catch (JRException jre) {
+                System.out.println(jre.getMessage());
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException sqlEx) {
+                        System.out.println(sqlEx.getMessage());
+                    }
+                    conn = null;
+                }
+            }
         }
     }
 

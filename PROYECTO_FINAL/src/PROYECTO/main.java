@@ -2,6 +2,7 @@ package PROYECTO;
 
 import PROYECTO.ventas;
 import PROYECTO.Cliente;
+import static PROYECTO.Factura.ReporteActores.generarReporte;
 import PROYECTO.Persona;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -51,7 +52,7 @@ public class main {
             stmt = conn.createStatement();
 
             //List<Producto> pro = new ArrayList<>();
-            while (opcion1 != 6) {
+            while (opcion1 != 7) {
                 System.out.println("");
                 System.out.println("======= MENU =======");
                 System.out.println("1. Registro de Datos");
@@ -59,7 +60,8 @@ public class main {
                 System.out.println("3. Listar ventas");
                 System.out.println("4. Buscar Factura");
                 System.out.println("5. Listar Todo");
-                System.out.println("6. Salir");
+                System.out.println("6. Reporte Facturas");
+                System.out.println("7. Salir");
                 System.out.print("Ingrese la opcion deseada: ");
                 opcion1 = entrada.nextInt();
                 entrada.nextLine();
@@ -301,8 +303,10 @@ public class main {
                     case 5:
                         ventas.listarTodo(rs, stmt);
                         break;
-
                     case 6:
+                        generarReporte();
+                        break;
+                    case 7:
                         System.out.println("Hasta pronto!");
                         break;
 

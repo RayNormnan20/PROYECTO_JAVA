@@ -19,7 +19,6 @@ public class ventas {
             int idCliente = entrada.nextInt();
             entrada.nextLine();
 
-            // The next() method should be called after executing the query to get the result set
             rs = stmt.executeQuery("SELECT * FROM clientes WHERE idCliente = " + idCliente);
             if (!rs.next()) {
                 System.out.println("No existe un cliente con el ID ingresado.");
@@ -40,14 +39,13 @@ public class ventas {
                 System.out.print("Ingrese la cantidad: ");
                 int cantidad = entrada.nextInt();
 
-                // The nextDouble() method should be called to get the total, not to read the quantity entered above
-                // Also, initialize the total to 0.0f to avoid a possible uninitialized variable error
+                //Inicializa los valores 
                 double total = 0.0f;
 
                 float precioUnitario = rs.getFloat("precio");
 
                 float subtotal = cantidad * precioUnitario;
-                float igv = subtotal * 0.18f; // 18% de IGV
+                float igv = subtotal * 0.18f; // 18% 
                 total = subtotal + igv;
                 stmt.executeUpdate("UPDATE productos_base SET stock = " + (stock - cantidad) + " WHERE idPro = " + idProducto);
                 stmt.executeUpdate("INSERT INTO facturas (fecha, idCliente, idProducto, cantidad, precioUnitario, subtotal, igv, total) "
