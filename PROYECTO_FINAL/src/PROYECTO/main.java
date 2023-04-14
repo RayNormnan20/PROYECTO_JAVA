@@ -36,9 +36,8 @@ public class main {
 
         ventas ventas = new ventas();
 
-        int opcion1 = 0;
-        int opcion2 = 0;
-        int opcion3 = 0;
+        //Variable spara moverse en menus
+        int opcion1 = 0, opcion2 = 0, opcion3 = 0;
         Scanner entrada = new Scanner(System.in);
         //int opcion = 0;
 
@@ -60,7 +59,7 @@ public class main {
                 System.out.println("3. Listar ventas");
                 System.out.println("4. Buscar Factura");
                 System.out.println("5. Listar Todo");
-                System.out.println("5. Salir");
+                System.out.println("6. Salir");
                 System.out.print("Ingrese la opcion deseada: ");
                 opcion1 = entrada.nextInt();
                 entrada.nextLine();
@@ -150,7 +149,6 @@ public class main {
                                     }
                                     opcion3 = 0;
                                     break;
-
                                 case 3:
                                     while (opcion3 != 5) {
                                         System.out.println("");
@@ -344,9 +342,6 @@ public class main {
                 }
                 conn = null;
             }
-
         }
-
     }
-
 }

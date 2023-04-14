@@ -117,7 +117,7 @@ public class ProductoBase {
                 idAlimenti = rs.getInt("idAlimenti");
             }
 
-            // Modificar los datos en la tabla de productos_base
+            // Modificar los datos en la tabla ProBASSE
             ps = conn.prepareStatement("UPDATE productos_base SET nombre = ?, idElectronicos = ?, idAlimenti = ?, descrip = ?, precio = ?, stock = ? WHERE idPro = ?");
             ps.setString(1, nombre);
             ps.setObject(2, idElectronicos);

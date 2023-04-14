@@ -52,7 +52,7 @@ public class Cliente extends Persona {
             String direccion = entrada.nextLine();
 
             Cliente cli = new Cliente(nombre, apellido, correo, direccion);
-            
+
             stmt.executeUpdate("INSERT INTO clientes (nombre, apellido, correo, direccion) values ('"
                     + cli.getNombre() + "', '" + cli.getApellido() + "', '"
                     + cli.getCorreo() + "', '" + cli.getDireccion() + "')");
@@ -70,17 +70,27 @@ public class Cliente extends Persona {
         try {
             System.out.println("\nListado de Clientes");
             System.out.println("----------------------");
-            rs = stmt.executeQuery("Select idCliente,nombre, apellido,correo, direccion FROM clientes");
+
+            rs = stmt.executeQuery("SELECT * FROM  clientes");
+
+            System.out.println("ID\tNombre\t\t\tApellido\t\t\tCorreo\t\t\tDireccion");
+            System.out.println("------------------------------------------------------------------------------------------------");
             while (rs.next()) {
-                System.out.println(rs.getInt("idCliente") + " "
-                        + rs.getString("nombre") + " " + rs.getString("apellido")
-                        + " " + rs.getString("correo") + " " + rs.getString("direccion"));
+                int idCli = rs.getInt("idCliente");
+                String nom = rs.getString("nombre");
+                String ape = rs.getString("apellido");
+                String correo = rs.getString("correo");
+                String direc = rs.getNString("direccion");
+
+                System.out.println(idCli + "\t" + nom + "\t\t\t" + ape + "\t\t\t" + correo + "\t\t" + direc );
+
             }
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendedorError" + ex.getErrorCode());
         }
+
     }
 
     public static void actualizarClientes(ResultSet rs, Statement stmt, Scanner entrada) {
