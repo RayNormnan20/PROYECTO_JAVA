@@ -90,10 +90,10 @@ public class ProductosAlimenticios {
             int idProAli = entrada.nextInt();
             entrada.nextLine();
 
-            System.out.println("Ingrese la nueva fecha de vencimiento del producto (en formato YYYY/MM/DD): ");
+            System.out.print("Ingrese la nueva fecha de vencimiento en formato YYY-MM-DD): ");
             String fechaVencimiento = entrada.nextLine();
 
-            System.out.println("Ingrese el nuevo país de origen del producto: ");
+            System.out.print("Ingrese el nuevo país de origen del producto: ");
             String paisOrigen = entrada.nextLine();
 
             // Actualizar el registro correspondiente en la tabla productos_alimenticios
@@ -124,7 +124,7 @@ public class ProductosAlimenticios {
                 return;
             }
 
-            // Si no hay productos_base referenciando el producto alimenticio, se puede eliminar el registro
+            // Si no hay referencia, elimina 
             rs = stmt.executeQuery("SELECT * FROM productos_alimenticios WHERE idProAli = " + idProAli);
             if (rs.next()) {
                 stmt.executeUpdate("DELETE FROM productos_alimenticios WHERE idProAli = " + idProAli);

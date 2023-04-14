@@ -139,7 +139,7 @@ public class Factura {
 
     public static void buscarFactura(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
-            System.out.println("Ingrese el ID de la factura que desea buscar:");
+            System.out.print("Ingrese el ID de la factura que desea buscar:");
             int idFactura = entrada.nextInt();
 
             String query = "SELECT * FROM facturas WHERE idFactura = " + idFactura;

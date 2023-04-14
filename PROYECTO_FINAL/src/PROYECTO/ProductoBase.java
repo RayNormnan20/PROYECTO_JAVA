@@ -78,7 +78,7 @@ public class ProductoBase {
     public static void actualizarProductoBase(Connection conn, ResultSet rs, Statement stmt, Scanner entrada) {
         try {
             PreparedStatement ps;
-            System.out.println("Ingrese el ID del producto a modificar: ");
+            System.out.print("Ingrese el ID del producto a modificar: ");
             int idPro = entrada.nextInt();
             entrada.nextLine();
 
@@ -89,13 +89,13 @@ public class ProductoBase {
                 return;
             }
 
-            System.out.println("Ingrese el nuevo nombre del producto: ");
+            System.out.print("Ingrese el nuevo nombre del producto: ");
             String nombre = entrada.nextLine();
-            System.out.println("Ingrese la nueva descripción del producto: ");
+            System.out.print("Ingrese la nueva descripción del producto: ");
             String descrip = entrada.nextLine();
-            System.out.println("Ingrese el nuevo precio del producto: ");
+            System.out.print("Ingrese el nuevo precio del producto: ");
             float precio = entrada.nextFloat();
-            System.out.println("Ingrese el nuevo stock del producto: ");
+            System.out.print("Ingrese el nuevo stock del producto: ");
             int stock = entrada.nextInt();
             entrada.nextLine();
 
@@ -155,7 +155,7 @@ public class ProductoBase {
     public static void eliminarProductoBase(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
             listaProductos(rs, stmt, entrada);
-            System.out.println("Ingrese el ID del producto que desea eliminar: ");
+            System.out.print("Ingrese el ID del producto que desea eliminar: ");
             int idPro = entrada.nextInt();
             entrada.nextLine(); // Consumir el salto de línea
 
