@@ -41,7 +41,6 @@ public class Cliente extends Persona {
     /*========================================TODO SOBLE LA TABLA GENERAL CLIENTES======================================================================*/
     public static void registrarClientes(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
-            entrada.nextLine();
             System.out.print("Ingrese el nombre del cliente: ");
             String nombre = entrada.nextLine();
             System.out.print("Ingrese apellido del cliente: ");

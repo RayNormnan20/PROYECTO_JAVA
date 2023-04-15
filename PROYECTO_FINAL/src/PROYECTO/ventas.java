@@ -13,7 +13,9 @@ public class ventas {
 
     public void hacerVenta(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
-            System.out.println("Ingrese la fecha: ");
+            System.out.println("Ingrese ID factura: ");
+            int idFactura = entrada.nextInt();
+            System.out.print("Ingrese la fecha (YYYY-MM-DD): ");
             String fecha = entrada.next();
             System.out.print("Ingrese el ID del cliente: ");
             int idCliente = entrada.nextInt();
@@ -25,38 +27,50 @@ public class ventas {
                 return;
             }
 
-            System.out.print("Ingrese el ID del producto a vender: ");
-            int idProducto = entrada.nextInt();
-            entrada.nextLine();
+            boolean seguirAgregandoProductos = true;
+            double total = 0.0f;
 
-            rs = stmt.executeQuery("SELECT * FROM productos_base WHERE idPro = " + idProducto);
-            if (rs.next()) {
-                int stock = rs.getInt("stock");
-                if (stock <= 0) {
-                    System.out.println("No hay suficiente stock para realizar la venta.");
-                    return;
+            while (seguirAgregandoProductos) {
+                System.out.print("Ingrese el ID del producto a vender: ");
+                int idProducto = entrada.nextInt();
+                entrada.nextLine();
+
+                rs = stmt.executeQuery("SELECT * FROM productos_base WHERE idPro = " + idProducto);
+                if (rs.next()) {
+                    int stock = rs.getInt("stock");
+                    if (stock <= 0) {
+                        System.out.println("No hay suficiente stock para realizar la venta.");
+                        continue;
+                    }
+                    System.out.print("Ingrese la cantidad: ");
+                    int cantidad = entrada.nextInt();
+
+                    float precioUnitario = rs.getFloat("precio");
+
+                    float subtotal = cantidad * precioUnitario;
+                    float igv = subtotal * 0.18f; // 18% 
+                    total += subtotal + igv;
+                    stmt.executeUpdate("UPDATE productos_base SET stock = " + (stock - cantidad) + " WHERE idPro = " + idProducto);
+                    stmt.executeUpdate("INSERT INTO facturas (idFactura, fecha, idCliente, idProducto, cantidad, precioUnitario, subtotal, igv, total) "
+                            + "SELECT '" + idFactura + "',  '" + fecha + "', " + idCliente + ", " + idProducto + ", " + cantidad + ", precio, " + subtotal + ", " + igv + ", " + total
+                            + " FROM productos_base WHERE idPro = " + idProducto);
+
+                    System.out.println("");
+                    System.out.println("Producto agregado correctamente.");
+                    System.out.print("¿Desea agregar otro producto? (S/N): ");
+                    entrada.nextLine();
+                    String respuesta = entrada.nextLine();
+                    if (!respuesta.equalsIgnoreCase("S")) {
+                        seguirAgregandoProductos = false;
+                    }
+                } else {
+                    System.out.println("No existe un producto con el ID " + idProducto + " ingresado.");
                 }
-                System.out.print("Ingrese la cantidad: ");
-                int cantidad = entrada.nextInt();
-
-                //Inicializa los valores 
-                double total = 0.0f;
-
-                float precioUnitario = rs.getFloat("precio");
-
-                float subtotal = cantidad * precioUnitario;
-                float igv = subtotal * 0.18f; // 18% 
-                total = subtotal + igv;
-                stmt.executeUpdate("UPDATE productos_base SET stock = " + (stock - cantidad) + " WHERE idPro = " + idProducto);
-                stmt.executeUpdate("INSERT INTO facturas (fecha, idCliente, idProducto, cantidad, precioUnitario, subtotal, igv, total) "
-                        + "SELECT '" + fecha + "', " + idCliente + ", " + idProducto + ", " + cantidad + ", precio, " + subtotal + ", " + igv + ", " + total
-                        + " FROM productos_base WHERE idPro = " + idProducto);
-
-                System.out.println("");
-                System.out.println("Venta realizada correctamente.");
-            } else {
-                System.out.println("No existe un producto con el ID " + idProducto + " ingresado.");
             }
+
+            System.out.println("");
+            System.out.println("Venta realizada correctamente.");
+            System.out.println("Total de la factura: " + total);
         } catch (SQLException sqlEx) {
             System.out.println("Error al realizar la venta: " + sqlEx.getMessage());
             System.out.println("SQLState: " + sqlEx.getSQLState());

@@ -298,6 +298,7 @@ public class main {
 
                     case 4:
                         Factura.buscarFactura(rs, stmt, entrada);
+                        
                         break;
 
                     case 5:

@@ -8,7 +8,10 @@ import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
@@ -19,34 +22,27 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class Factura {
 
-    private int idFactura;
-    private String fecha;
+    private int id;
     private int idCliente;
-    private int idProducto;
-    private int cantidad;
-    private float precioUnitario;
-    private float subtotal;
-    private float igv;
     private float total;
+    private float igv;
+    private String fecha;
+    private List<DetalleFactura> detalles;
 
-    public Factura(int idFactura, String fecha, int idCliente, int idProducto, int cantidad, float precioUnitario, float subtotal, float igv, float total) {
-        this.idFactura = idFactura;
-        this.fecha = fecha;
+    public Factura(int idCliente, float total, float igv, String fecha) {
         this.idCliente = idCliente;
-        this.idProducto = idProducto;
-        this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
-        this.subtotal = subtotal;
-        this.igv = igv;
         this.total = total;
+        this.igv = igv;
+        this.fecha = fecha;
+        this.detalles = new ArrayList<>();
     }
 
-    public int getIdFactura() {
-        return idFactura;
+    public int getId() {
+        return id;
     }
 
-    public void setIdFactura(int idFactura) {
-        this.idFactura = idFactura;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIdCliente() {
@@ -57,36 +53,12 @@ public class Factura {
         this.idCliente = idCliente;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public float getTotal() {
+        return total;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public float getPrecioUnitario() {
-        return precioUnitario;
-    }
-
-    public void setPrecioUnitario(float precioUnitario) {
-        this.precioUnitario = precioUnitario;
-    }
-
-    public float getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(float subtotal) {
-        this.subtotal = subtotal;
+    public void setTotal(float total) {
+        this.total = total;
     }
 
     public float getIgv() {
@@ -97,14 +69,6 @@ public class Factura {
         this.igv = igv;
     }
 
-    public float getTotal() {
-        return total;
-    }
-
-    public void setTotal(float total) {
-        this.total = total;
-    }
-
     public String getFecha() {
         return fecha;
     }
@@ -113,15 +77,21 @@ public class Factura {
         this.fecha = fecha;
     }
 
+    public List<DetalleFactura> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleFactura> detalles) {
+        this.detalles = detalles;
+    }
+
     public static void listaFacturaVentas(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
             rs = stmt.executeQuery("SELECT * FROM facturas");
             System.out.println("");
             System.out.println("==================FACTURA DE LA VENTA REALIZADA===================");
             System.out.println("ID\tFecha\t\tidCli\tidPro\tcantidad \tprecioUni\tsubtotal \tigv\ttotal");
-            
 
-            // Iterar sobre los resultados de la consulta
             while (rs.next()) {
                 int idFactura = rs.getInt("idFactura");
                 String fecha = rs.getString("fecha");
@@ -179,6 +149,78 @@ public class Factura {
             System.out.println("VendedorError" + sqlEx.getErrorCode());
             System.out.println("SQLState: " + sqlEx.getSQLState());
             System.out.println("VendedorError" + sqlEx.getErrorCode());
+
+        }
+
+    }
+
+    public class DacturaFetalle {
+
+        public void hacerFacturaDetalle(ResultSet rs, Statement stmt, Scanner entrada) {
+            // Solicitar al usuario el idCliente y la fecha de la factura
+            System.out.print("Ingrese el ID del cliente: ");
+            int idCliente = entrada.nextInt();
+            System.out.print("Ingrese la fecha de la factura (formato YYYY-MM-DD): ");
+            String fecha = entrada.next();
+
+            // Crear una instancia de la clase Factura y agregar detalles
+            Factura factura = new Factura(idCliente, 0, 0, fecha);
+            System.out.print("Ingrese el número de detalles de factura: ");
+            int n = entrada.nextInt();
+            for (int i = 0; i < n; i++) {
+                System.out.print("Ingrese el ID del producto: ");
+                int idProducto = entrada.nextInt();
+                System.out.print("Ingrese la cantidad: ");
+                int cantidad = entrada.nextInt();
+
+                float precio = ProductoBase.getPrecio(idProducto);
+                float subtotal = precio * cantidad;
+                factura.detalles(new DetalleFactura(factura.getId(), idProducto, precio, cantidad, subtotal));
+            }
+
+            // Calcular el total y el igv de la factura por los detalles 
+            float total = 0;
+            for (DetalleFactura detalle : factura.getDetalles()) {
+                total += detalle.getSubtotal();
+            }
+            float igv = total * 0.18f;
+            factura.setTotal(total);
+            factura.setIgv(igv);
+
+            // Guardar la factura y sus detalles en la base de datos
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tu_base_de_datos", "tu_usuario", "tu_contraseña")) {
+                String query = "INSERT INTO facturas (idCliente, total, igv, fecha) VALUES (?, ?, ?, ?)";
+                PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, factura.getIdCliente());
+                ps.setFloat(2, factura.getTotal());
+                ps.setFloat(3, factura.getIgv());
+                ps.setString(4, factura.getFecha());
+                ps.executeUpdate();
+
+                // Obtener el id generado para la factura
+                if (rs.next()) {
+                    int idFactura = rs.getInt(1);
+                    factura.setId(idFactura);
+                    // Guardar los detalles de la factura
+                    for (DetalleFactura detalle : factura.getDetalles()) {
+                        query = "INSERT INTO detalle_factura (idFactura, idProducto,cantidad precioUnitario, subtotal) VALUES (?, ?, ?, ?, ?)";
+                        ps = conn.prepareStatement(query);
+                        ps.setInt(1, detalle.getIdFactura());
+                        ps.setInt(2, detalle.getIdProducto());
+                        ps.setInt(3, detalle.getCantidad());
+                        ps.setFloat(4, detalle.getPrecioUnitario());
+                        ps.setFloat(5, detalle.getSubtotal());
+                        ps.executeUpdate();
+                    }
+
+                    System.out.println("Factura creada con éxito:");
+                    System.out.println(factura.toString());
+                } else {
+                    System.out.println("No se pudo obtener el id generado para la factura.");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al guardar la factura en la base de datos: " + e.getMessage());
+            }
         }
     }
 
@@ -192,6 +234,8 @@ public class Factura {
                 JasperPrint jasperPrint = JasperFillManager.fillReport(
                         "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\Factura.jasper",
                         null, conn);
+                JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\Factura.pdf");
+
                 JasperViewer jasperViewer = new JasperViewer(jasperPrint);
                 jasperViewer.setVisible(true);
 

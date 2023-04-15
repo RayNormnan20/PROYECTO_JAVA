@@ -58,7 +58,7 @@ public class ProductoBase {
         this.descrip = descrip;
     }
 
-    public float getPrecio() {
+    public float getPrecio(int idProducto) {
         return precio;
     }
 
@@ -142,7 +142,7 @@ public class ProductoBase {
             rs = stmt.executeQuery("Select idPro,nombre,idElectronicos,idAlimenti,descrip,precio, stock FROM productos_base");
             while (rs.next()) {
                 System.out.println(rs.getInt("idPro") + " "
-                        + rs.getString("nombre") + " " + rs.getInt("idElectronicos") + " " + rs.getString("descrip")
+                        + rs.getString("nombre") + " " + rs.getInt("idElectronicos") + " " + rs.getInt("idAlimenti") +" " + rs.getString("descrip")
                         + " " + rs.getDouble("precio") + " " + rs.getInt("stock"));
             }
         } catch (SQLException ex) {

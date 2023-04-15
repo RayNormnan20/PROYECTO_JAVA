@@ -126,7 +126,7 @@ public class ProductoElectronico {
             System.out.print("Ingrese el nuevo modelo del producto electrónico: ");
             String modelo = entrada.nextLine();
 
-            entrada.nextLine();
+            
             System.out.print("Ingrese la nueva potencia del producto electronico: ");
             int potencia = entrada.nextInt();
             
