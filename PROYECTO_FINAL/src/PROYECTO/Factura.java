@@ -24,13 +24,15 @@ public class Factura {
 
     private int id;
     private int idCliente;
+    private float subtotal;
     private float total;
     private float igv;
     private String fecha;
     private List<DetalleFactura> detalles;
 
-    public Factura(int idCliente, float total, float igv, String fecha) {
+    public Factura(int idCliente, float subtotal, float total, float igv, String fecha) {
         this.idCliente = idCliente;
+        this.subtotal = subtotal;
         this.total = total;
         this.igv = igv;
         this.fecha = fecha;
@@ -77,6 +79,14 @@ public class Factura {
         this.fecha = fecha;
     }
 
+    public float getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(float subtotal) {
+        this.subtotal = subtotal;
+    }
+
     public List<DetalleFactura> getDetalles() {
         return detalles;
     }
@@ -89,22 +99,17 @@ public class Factura {
         try {
             rs = stmt.executeQuery("SELECT * FROM facturas");
             System.out.println("");
-            System.out.println("==================FACTURA DE LA VENTA REALIZADA===================");
-            System.out.println("ID\tFecha\t\tidCli\tidPro\tcantidad \tprecioUni\tsubtotal \tigv\ttotal");
+            System.out.println("=======FACTURA DE LA VENTA REALIZADA=======");
+            System.out.println("ID\tidCli\ttotal\tigv\tFecha");
 
             while (rs.next()) {
                 int idFactura = rs.getInt("idFactura");
                 String fecha = rs.getString("fecha");
                 int idCliente = rs.getInt("idCliente");
-                int idProducto = rs.getInt("idProducto");
-                int cantidad = rs.getInt("cantidad");
-                float precioUnitario = rs.getFloat("precioUnitario");
-                float subtotal = rs.getFloat("subtotal");
                 float igv = rs.getFloat("igv");
                 float total = rs.getFloat("total");
 
-                System.out.println(idFactura + "\t" + fecha + "\t" + idCliente
-                        + "\t" + idProducto + "\t" + cantidad + "\t\t" + precioUnitario + "\t\t" + subtotal + "\t\t" + igv + "\t" + total);
+                System.out.println(idFactura + "\t" + idCliente + "\t" + total + "\t" + igv + "\t" + fecha);
             }
         } catch (SQLException sqlEx) {
             System.out.println("Error al obtener el listado de productos alimenticios: " + sqlEx.getMessage());
@@ -125,21 +130,16 @@ public class Factura {
 
             if (rs.next()) {
                 System.out.println("");
-                System.out.println("==================FACTURA DE LA VENTA REALIZADA===================");
-                System.out.println("ID\tFecha\t\tidCli\tidPro\tcantidad \tprecioUni\tsubtotal \tigv\ttotal");
+                System.out.println("=========FACTURA DE LA VENTA REALIZADA===========");
+                System.out.println("ID\tidCli\ttotal\tigv\tFecha");
                 System.out.println("");
 
-                String fecha = rs.getString("fecha");
                 int idCliente = rs.getInt("idCliente");
-                int idProducto = rs.getInt("idProducto");
-                int cantidad = rs.getInt("cantidad");
-                float precioUnitario = rs.getFloat("precioUnitario");
-                float subtotal = rs.getFloat("subtotal");
-                float igv = rs.getFloat("igv");
                 float total = rs.getFloat("total");
+                float igv = rs.getFloat("igv");
+                String fecha = rs.getString("fecha");
 
-                System.out.println(idFactura + "\t" + fecha + "\t" + idCliente
-                        + "\t" + idProducto + "\t" + cantidad + "\t\t" + precioUnitario + "\t\t" + subtotal + "\t\t" + igv + "\t" + total);
+                System.out.println(idFactura + "\t" + idCliente + "\t" + total + "\t" + igv + "\t" + fecha);
             } else {
                 System.out.println("No se encontró ninguna factura con el ID ingresado.");
             }
@@ -154,74 +154,7 @@ public class Factura {
 
     }
 
-    public class DacturaFetalle {
-
-        public void hacerFacturaDetalle(ResultSet rs, Statement stmt, Scanner entrada) {
-            // Solicitar al usuario el idCliente y la fecha de la factura
-            System.out.print("Ingrese el ID del cliente: ");
-            int idCliente = entrada.nextInt();
-            System.out.print("Ingrese la fecha de la factura (formato YYYY-MM-DD): ");
-            String fecha = entrada.next();
-
-            // Crear una instancia de la clase Factura y agregar detalles
-            Factura factura = new Factura(idCliente, 0, 0, fecha);
-            System.out.print("Ingrese el número de detalles de factura: ");
-            int n = entrada.nextInt();
-            for (int i = 0; i < n; i++) {
-                System.out.print("Ingrese el ID del producto: ");
-                int idProducto = entrada.nextInt();
-                System.out.print("Ingrese la cantidad: ");
-                int cantidad = entrada.nextInt();
-
-                float precio = ProductoBase.getPrecio(idProducto);
-                float subtotal = precio * cantidad;
-                factura.detalles(new DetalleFactura(factura.getId(), idProducto, precio, cantidad, subtotal));
-            }
-
-            // Calcular el total y el igv de la factura por los detalles 
-            float total = 0;
-            for (DetalleFactura detalle : factura.getDetalles()) {
-                total += detalle.getSubtotal();
-            }
-            float igv = total * 0.18f;
-            factura.setTotal(total);
-            factura.setIgv(igv);
-
-            // Guardar la factura y sus detalles en la base de datos
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tu_base_de_datos", "tu_usuario", "tu_contraseña")) {
-                String query = "INSERT INTO facturas (idCliente, total, igv, fecha) VALUES (?, ?, ?, ?)";
-                PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, factura.getIdCliente());
-                ps.setFloat(2, factura.getTotal());
-                ps.setFloat(3, factura.getIgv());
-                ps.setString(4, factura.getFecha());
-                ps.executeUpdate();
-
-                // Obtener el id generado para la factura
-                if (rs.next()) {
-                    int idFactura = rs.getInt(1);
-                    factura.setId(idFactura);
-                    // Guardar los detalles de la factura
-                    for (DetalleFactura detalle : factura.getDetalles()) {
-                        query = "INSERT INTO detalle_factura (idFactura, idProducto,cantidad precioUnitario, subtotal) VALUES (?, ?, ?, ?, ?)";
-                        ps = conn.prepareStatement(query);
-                        ps.setInt(1, detalle.getIdFactura());
-                        ps.setInt(2, detalle.getIdProducto());
-                        ps.setInt(3, detalle.getCantidad());
-                        ps.setFloat(4, detalle.getPrecioUnitario());
-                        ps.setFloat(5, detalle.getSubtotal());
-                        ps.executeUpdate();
-                    }
-
-                    System.out.println("Factura creada con éxito:");
-                    System.out.println(factura.toString());
-                } else {
-                    System.out.println("No se pudo obtener el id generado para la factura.");
-                }
-            } catch (SQLException e) {
-                System.out.println("Error al guardar la factura en la base de datos: " + e.getMessage());
-            }
-        }
+    void addDetalleFactura(DetalleFactura detalle) {
     }
 
     public class ReporteActores {

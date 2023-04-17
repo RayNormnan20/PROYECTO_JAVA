@@ -14,6 +14,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import static PROYECTO.DetalleFactura.jose.hacerFacturaDetalle;
+import PROYECTO.DetalleFactura;
 
 /**
  *
@@ -305,7 +307,8 @@ public class main {
                         ventas.listarTodo(rs, stmt);
                         break;
                     case 6:
-                        generarReporte();
+                        DetalleFactura.jose.hacerFacturaDetalle(rs, stmt, entrada);
+                        //generarReporte();
                         break;
                     case 7:
                         System.out.println("Hasta pronto!");
@@ -349,4 +352,6 @@ public class main {
             }
         }
     }
+    
+    
 }

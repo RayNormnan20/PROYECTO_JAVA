@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
+import java.sql.DriverManager;
 
 public class ProductoBase {
 
@@ -17,7 +18,6 @@ public class ProductoBase {
     private int stock;
 
     public ProductoBase(String nombre, int idElectronicos, int idAlimenti, String descrip, float precio, int stock) {
-
         this.nombre = nombre;
         this.idElectronicos = idElectronicos;
         this.idAlimenti = idAlimenti;
@@ -58,7 +58,7 @@ public class ProductoBase {
         this.descrip = descrip;
     }
 
-    public float getPrecio(int idProducto) {
+    public float getPrecio() {
         return precio;
     }
 
@@ -73,6 +73,27 @@ public class ProductoBase {
     public void setStock(int stock) {
         this.stock = stock;
     }
+   
+    Connection conn = null;
+
+    // Creamos una clase 
+    public static float getPrecio(int idProducto) {
+        float precio = 0;
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto?", "root", "12345678")) {
+            PreparedStatement ps = conn.prepareStatement("SELECT precio FROM productos_base WHERE idPro = ?");
+            ps.setInt(1, idProducto);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                precio = rs.getFloat("precio");
+            } else {
+                System.out.println("No se encontró ningún producto con el ID especificado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al buscar el precio del producto en la base de datos: " + e.getMessage());
+        }
+        return precio;
+    }
+
 
     /*========================================TODO SOBLE LA TABLA GENERAL PRODUCTOS===================================================================*/
     public static void actualizarProductoBase(Connection conn, ResultSet rs, Statement stmt, Scanner entrada) {
@@ -142,7 +163,7 @@ public class ProductoBase {
             rs = stmt.executeQuery("Select idPro,nombre,idElectronicos,idAlimenti,descrip,precio, stock FROM productos_base");
             while (rs.next()) {
                 System.out.println(rs.getInt("idPro") + " "
-                        + rs.getString("nombre") + " " + rs.getInt("idElectronicos") + " " + rs.getInt("idAlimenti") +" " + rs.getString("descrip")
+                        + rs.getString("nombre") + " " + rs.getInt("idElectronicos") + " " + rs.getInt("idAlimenti") + " " + rs.getString("descrip")
                         + " " + rs.getDouble("precio") + " " + rs.getInt("stock"));
             }
         } catch (SQLException ex) {
@@ -157,7 +178,7 @@ public class ProductoBase {
             listaProductos(rs, stmt, entrada);
             System.out.print("Ingrese el ID del producto que desea eliminar: ");
             int idPro = entrada.nextInt();
-            entrada.nextLine(); // Consumir el salto de línea
+            entrada.nextLine();
 
             rs = stmt.executeQuery("SELECT * FROM productos_base WHERE idPro = " + idPro);
 
