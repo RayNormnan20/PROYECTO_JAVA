@@ -73,7 +73,7 @@ public class DetalleFactura {
     public class jose {
 
         public static void hacerFacturaDetalle(ResultSet rs, Statement stmt, Scanner entrada) {
-            // Solicitar al usuario el idCliente y la fecha de la factura
+           
             System.out.print("Ingrese el ID del cliente: ");
             int idCliente = entrada.nextInt();
             entrada.nextLine(); // Limpiar el buffer del scanner
@@ -84,15 +84,14 @@ public class DetalleFactura {
             Factura factura = new Factura(idCliente, 0, 0, 0, fecha);
             System.out.print("Ingrese el número de detalles de factura: ");
             int n = entrada.nextInt();
-            entrada.nextLine(); // Limpiar el buffer del scanner
+            entrada.nextLine(); 
             for (int i = 0; i < n; i++) {
                 System.out.print("Ingrese el ID del producto: ");
                 int idProducto = entrada.nextInt();
-                entrada.nextLine(); // Limpiar el buffer del scanner
+                entrada.nextLine(); 
                 System.out.print("Ingrese la cantidad: ");
                 int cantidad = entrada.nextInt();
-                entrada.nextLine(); // Limpiar el buffer del scanner
-
+                entrada.nextLine(); 
                 float precio = ProductoBase.getPrecio(idProducto);
                 float subtotal = precio * cantidad;
                 DetalleFactura detalle = new DetalleFactura(factura.getId(), idProducto, precio, cantidad, subtotal);
