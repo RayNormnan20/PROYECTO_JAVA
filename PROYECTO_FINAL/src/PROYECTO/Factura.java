@@ -99,17 +99,18 @@ public class Factura {
         try {
             rs = stmt.executeQuery("SELECT * FROM facturas");
             System.out.println("");
-            System.out.println("=======FACTURA DE LA VENTA REALIZADA=======");
-            System.out.println("ID\tidCli\ttotal\tigv\tFecha");
+            System.out.println("=================FACTURA DE LA VENTA REALIZADA================");
+            System.out.println("ID\tidCli\t\tsubtotal\t\ttotal\t\tigv\t\tFecha");
 
             while (rs.next()) {
                 int idFactura = rs.getInt("idFactura");
                 String fecha = rs.getString("fecha");
                 int idCliente = rs.getInt("idCliente");
+                float subTotal = rs.getFloat("subtotal");
                 float igv = rs.getFloat("igv");
                 float total = rs.getFloat("total");
 
-                System.out.println(idFactura + "\t" + idCliente + "\t" + total + "\t" + igv + "\t" + fecha);
+                System.out.println(idFactura + "\t" + idCliente + "\t\t" + subTotal + "\t\t" + total + "\t\t" + igv + "\t\t" + fecha);
             }
         } catch (SQLException sqlEx) {
             System.out.println("Error al obtener el listado de productos alimenticios: " + sqlEx.getMessage());
@@ -131,17 +132,18 @@ public class Factura {
             if (rs.next()) {
                 System.out.println("");
                 System.out.println("=========FACTURA DE LA VENTA REALIZADA===========");
-                System.out.println("ID\tidCli\ttotal\tigv\tFecha");
+                System.out.println("ID\tidCli\tsubtotal\t\ttotal\tigv\tFecha");
                 System.out.println("");
 
                 int idCliente = rs.getInt("idCliente");
+                float subtotal = rs.getFloat("subtotal");
                 float total = rs.getFloat("total");
                 float igv = rs.getFloat("igv");
                 String fecha = rs.getString("fecha");
 
-                System.out.println(idFactura + "\t" + idCliente + "\t" + total + "\t" + igv + "\t" + fecha);
+                System.out.println(idFactura + "\t" + idCliente + "\t" +subtotal + "\t\t" + total + "\t" + igv + "\t" + fecha);
             } else {
-                System.out.println("No se encontró ninguna factura con el ID ingresado.");
+                System.out.println("No se encontro ninguna factura con el ID ingresado.");
             }
         } catch (SQLException sqlEx) {
             System.out.println("Error al buscar la factura: " + sqlEx.getMessage());
@@ -152,9 +154,6 @@ public class Factura {
 
         }
 
-    }
-
-    void addDetalleFactura(DetalleFactura detalle) {
     }
 
     public class ReporteActores {
