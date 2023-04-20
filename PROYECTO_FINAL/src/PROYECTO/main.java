@@ -2,7 +2,6 @@ package PROYECTO;
 
 import PROYECTO.ventas;
 import PROYECTO.Cliente;
-import static PROYECTO.Factura.ReporteActores.generarReporte;
 import PROYECTO.Persona;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import PROYECTO.DetalleFactura;
+import static PROYECTO.Factura.ReporteFacturas.generarReporte;
 
 /**
  *
@@ -23,6 +23,10 @@ import PROYECTO.DetalleFactura;
 public class main {
 
     private static void menuPrincipal() {
+    }
+
+    private static void generarReporteVenta() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public Connection conn = null;
@@ -291,6 +295,7 @@ public class main {
 
                     case 2:
                         ventas.hacerVentaSebas(rs, stmt, entrada);
+                        generarReporteVenta();
                         //ventas.hacerVenta(rs, stmt, entrada);
                         break;
 

@@ -192,5 +192,6 @@ public class ventas {
             System.out.println("VendedorError" + ex.getErrorCode());
         }
     }
+    
 
 }
