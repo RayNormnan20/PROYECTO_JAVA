@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 import PROYECTO.DetalleFactura;
 import static PROYECTO.Factura.ReporteFacturas.generarReporte;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -23,10 +24,6 @@ import static PROYECTO.Factura.ReporteFacturas.generarReporte;
 public class main {
 
     private static void menuPrincipal() {
-    }
-
-    private static void generarReporteVenta() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public Connection conn = null;
@@ -38,7 +35,7 @@ public class main {
     public static List<ProductosAlimenticios> proAli = new ArrayList<>();
     public static List<Factura> nuFac = new ArrayList<>();
 
-    public static void main(String[] args) throws ParseException, SQLException {
+    public static void main(String[] args) throws ParseException, SQLException, JRException {
 
         ventas ventas = new ventas();
 
@@ -57,16 +54,15 @@ public class main {
             stmt = conn.createStatement();
 
             //List<Producto> pro = new ArrayList<>();
-            while (opcion1 != 7) {
+            while (opcion1 != 6) {
                 System.out.println("");
                 System.out.println("======= MENU =======");
                 System.out.println("1. Registro de Datos");
                 System.out.println("2. Hacer una venta");
                 System.out.println("3. Listar ventas");
                 System.out.println("4. Buscar Factura");
-                System.out.println("5. Listar Todo");
-                System.out.println("6. Reporte Facturas");
-                System.out.println("7. Salir");
+                System.out.println("5. Reporte Facturas");
+                System.out.println("6. Salir");
                 System.out.print("Ingrese la opcion deseada: ");
                 opcion1 = entrada.nextInt();
                 entrada.nextLine();
@@ -295,8 +291,7 @@ public class main {
 
                     case 2:
                         ventas.hacerVentaSebas(rs, stmt, entrada);
-                        generarReporteVenta();
-                        //ventas.hacerVenta(rs, stmt, entrada);
+                        Factura.generarReporteVentas();
                         break;
 
                     case 3:
@@ -306,15 +301,12 @@ public class main {
                     case 4:
                         Factura.buscarFactura(rs, stmt, entrada);
                         break;
-
                     case 5:
-                        ventas.listarTodo(rs, stmt);
-                        break;
-                    case 6:
                         generarReporte();
                         break;
-                    case 7:
-                        System.out.println("Hasta pronto!");
+                    case 6:
+                        System.out.println("\nHasta pronto!!!\nGracias por usar nuestro programa\n");
+
                         break;
 
                     default:

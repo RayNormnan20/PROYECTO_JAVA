@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
@@ -165,8 +167,8 @@ public class Factura {
             try {
                 conn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto?"
                         + "user=root&password=12345678");
-                JasperPrint jasperPrint = JasperFillManager.fillReport("C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\FacturaVentas.jasper", null, conn);
-                //JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\FacturaVentas.pdf");
+                JasperPrint jasperPrint = JasperFillManager.fillReport("C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\REPORTE_FACTURAS.jasper", null, conn);
+                //JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\REPORTE_FACTURAS.pdf");
                 System.out.println("Archivo creado correctamente");
                 JasperViewer jasperViewer = new JasperViewer(jasperPrint);
                 jasperViewer.setVisible(true);
@@ -191,22 +193,24 @@ public class Factura {
         }
     }
 
-    public void generarReporteVenta(int idFactura) throws JRException {
+    public static void generarReporteVentas() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto?"
                     + "user=root&password=12345678");
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("idFactura", idFactura);
-            JasperPrint jasperPrint = JasperFillManager.fillReport("C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\ReporteVentas.jasper", params, conn);
+            JasperPrint jasperPrint = JasperFillManager.fillReport("C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\FACTURA_VENTAS.jasper", null, conn);
+            //JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\FacturaVentas.pdf");
+            System.out.println("Archivo creado correctamente");
             JasperViewer jasperViewer = new JasperViewer(jasperPrint);
             jasperViewer.setVisible(true);
+
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendedorError" + ex.getErrorCode());
-        } catch (JRException  ex) {
-            System.out.println(ex.getMessage());
+
+        } catch (JRException jre) {
+            System.out.println(jre.getMessage());
         } finally {
             if (conn != null) {
                 try {
@@ -218,5 +222,6 @@ public class Factura {
             }
         }
     }
-
 }
+
+
