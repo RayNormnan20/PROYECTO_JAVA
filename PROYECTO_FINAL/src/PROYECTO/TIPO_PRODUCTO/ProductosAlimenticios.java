@@ -1,4 +1,4 @@
-package PROYECTO.CLASE_HIJA;
+package PROYECTO.TIPO_PRODUCTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

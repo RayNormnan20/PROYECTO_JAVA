@@ -1,7 +1,7 @@
 package PROYECTO.SALIDA;
 
-import PROYECTO.CLASE_HIJA.ProductosAlimenticios;
-import PROYECTO.CLASE_HIJA.ProductoElectronico;
+import PROYECTO.TIPO_PRODUCTO.ProductosAlimenticios;
+import PROYECTO.TIPO_PRODUCTO.ProductoElectronico;
 import PROYECTO.CLASE_HIJA.ProductoBase;
 import PROYECTO.CLASE_HIJA.Cliente;
 import PROYECTO.VENTAS.Factura;
@@ -226,7 +226,7 @@ public class main {
                                                 ProductoBase.eliminarProductoBase(rs, stmt, entrada);
                                                 break;
                                             case 3:
-                                                ProductoBase.actualizarProductoBase(conn, rs, stmt, entrada);
+                                                ProductoBase.actualizarProductoBase(conn, entrada);
                                                 break;
                                             case 4:
                                                 ProductoBase.listaProductos(rs, stmt, entrada);

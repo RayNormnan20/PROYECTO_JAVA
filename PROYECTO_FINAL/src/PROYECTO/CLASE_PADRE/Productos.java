@@ -7,13 +7,15 @@ package PROYECTO.CLASE_PADRE;
  */
 public class Productos {
     private String nombre ;
-    private int stock;
     private double precio;
+    private int stock;
+    
 
-    public Productos(String nombre, int stock, double precio) {
+    public Productos(String nombre, double precio, int stock) {
         this.nombre = nombre;
-        this.stock = stock;
         this.precio = precio;
+        this.stock = stock;
+        
     }
 
     public String getNombre() {

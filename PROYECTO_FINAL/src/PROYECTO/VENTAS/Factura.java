@@ -25,18 +25,19 @@ public class Factura {
     private int idCliente;
     private float subtotal;
     private float total;
-    private static final float igv;
+    public  final float IGV = 0;
     private String fecha;
     private List<DetalleFactura> detalles;
 
-    public Factura(int idCliente, float subtotal, float total, float igv, String fecha) {
+    public Factura(int idCliente, float subtotal, float total, String fecha) {
         this.idCliente = idCliente;
         this.subtotal = subtotal;
         this.total = total;
-        Factura.igv = igv;
         this.fecha = fecha;
         this.detalles = new ArrayList<>();
     }
+    
+    
 
     public int getId() {
         return id;
@@ -62,14 +63,7 @@ public class Factura {
         this.total = total;
     }
 
-    public float getIgv() {
-        return igv;
-    }
-
-    public void setIgv(float igv) {
-        this.igv = igv;
-    }
-
+   
     public String getFecha() {
         return fecha;
     }

@@ -9,21 +9,19 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.sql.DriverManager;
 
-public class ProductoBase extends Productos{
+public class ProductoBase extends Productos {
 
-    
     private int idElectronicos;
     private int idAlimenti;
     private String descrip;
-   
-    public ProductoBase(String nombre,int idElectronicos, int idAlimenti, String descrip, int stock, double precio ) {
-        super(nombre, stock, precio);
+
+    public ProductoBase(String nombre, int idElectronicos, int idAlimenti, String descrip, double precio, int stock) {
+        super(nombre, precio, stock);
         this.idElectronicos = idElectronicos;
         this.idAlimenti = idAlimenti;
         this.descrip = descrip;
-        
-    }
 
+    }
 
     public int getIdElectronicos() {
         return idElectronicos;
@@ -48,7 +46,7 @@ public class ProductoBase extends Productos{
     public void setDescrip(String descrip) {
         this.descrip = descrip;
     }
-  
+
     Connection conn = null;
 
     // Creamos una clase 
@@ -71,23 +69,25 @@ public class ProductoBase extends Productos{
 
 
     /*========================================TODO SOBLE LA TABLA GENERAL PRODUCTOS===================================================================*/
-    public static void actualizarProductoBase(Connection conn, ResultSet rs, Statement stmt, Scanner entrada) {
+    public static void actualizarProductoBase(Connection conn, Scanner entrada) {
         try {
             PreparedStatement ps;
             System.out.print("Ingrese el ID del producto a modificar: ");
             int idPro = entrada.nextInt();
             entrada.nextLine();
 
-            // Verificar que el producto existe en la tabla de productos_base
-            rs = stmt.executeQuery("SELECT * FROM productos_base WHERE idPro = '" + idPro + "'");
+            // Verificar que el producto existe
+            ps = conn.prepareStatement("SELECT * FROM productos_base WHERE idPro = ?");
+            ps.setInt(1, idPro);
+            ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
-                System.out.println("No se encontró ningún producto con el ID ingresado.");
+                System.out.println("No se encontró ningún producto con el ID " + idPro + " ingresado.");
                 return;
             }
 
             System.out.print("Ingrese el nuevo nombre del producto: ");
             String nombre = entrada.nextLine();
-            System.out.print("Ingrese la nueva descripción del producto: ");
+            System.out.print("Ingrese la nueva descripcion del producto: ");
             String descrip = entrada.nextLine();
             System.out.print("Ingrese el nuevo precio del producto: ");
             float precio = entrada.nextFloat();
@@ -95,25 +95,18 @@ public class ProductoBase extends Productos{
             int stock = entrada.nextInt();
             entrada.nextLine();
 
-            // Verificar si el producto es electr...
-            ps = conn.prepareStatement("SELECT idElectronicos FROM productos_base WHERE idPro = ?");
+            // Verificar si el producto es electrónico o alimenticio
+            ps = conn.prepareStatement("SELECT idElectronicos, idAlimenti FROM productos_base WHERE idPro = ?");
             ps.setInt(1, idPro);
             rs = ps.executeQuery();
             Integer idElectronicos = null;
-            if (rs.next()) {
-                idElectronicos = rs.getInt("idElectronicos");
-            }
-
-            // Verificar si el producto es alimenticio
-            ps = conn.prepareStatement("SELECT idAlimenti FROM productos_base WHERE idPro = ?");
-            ps.setInt(1, idPro);
-            rs = ps.executeQuery();
             Integer idAlimenti = null;
             if (rs.next()) {
-                idAlimenti = rs.getInt("idAlimenti");
+                idElectronicos = (Integer) rs.getObject("idElectronicos");
+                idAlimenti = (Integer) rs.getObject("idAlimenti");
             }
 
-            // Modificar los datos en la tabla ProBASSE
+            // Modificar los datos en la tabla proBase
             ps = conn.prepareStatement("UPDATE productos_base SET nombre = ?, idElectronicos = ?, idAlimenti = ?, descrip = ?, precio = ?, stock = ? WHERE idPro = ?");
             ps.setString(1, nombre);
             ps.setObject(2, idElectronicos);
@@ -122,12 +115,17 @@ public class ProductoBase extends Productos{
             ps.setFloat(5, precio);
             ps.setInt(6, stock);
             ps.setInt(7, idPro);
-            ps.executeUpdate();
+            int lineasAfectadas = ps.executeUpdate();
 
-            System.out.println("Producto modificado correctamente.");
-
+            if (lineasAfectadas > 0) {
+                System.out.println("Producto modificado correctamente.");
+            } else {
+                System.out.println("No se pudo modificar el producto.");
+            }
         } catch (SQLException sqlEx) {
             System.out.println("Error al modificar el producto: " + sqlEx.getMessage());
+            System.out.println("SQLState: " + sqlEx.getSQLState());
+            System.out.println("Error Code: " + sqlEx.getErrorCode());
         }
     }
 
