@@ -1,8 +1,5 @@
 package PROYECTO;
 
-import PROYECTO.ventas;
-import PROYECTO.Cliente;
-import PROYECTO.Persona;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,7 +10,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import PROYECTO.DetalleFactura;
 import static PROYECTO.Factura.ReporteFacturas.generarReporte;
 import net.sf.jasperreports.engine.JRException;
 
@@ -22,9 +18,6 @@ import net.sf.jasperreports.engine.JRException;
  * @author Lenovo
  */
 public class main {
-
-    private static void menuPrincipal() {
-    }
 
     public Connection conn = null;
     public Statement stmt = null;
