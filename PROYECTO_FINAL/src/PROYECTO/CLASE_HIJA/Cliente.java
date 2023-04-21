@@ -1,6 +1,7 @@
-package PROYECTO;
+package PROYECTO.CLASE_HIJA;
 
-import static PROYECTO.main.cliNuevo;
+import PROYECTO.CLASE_PADRE.Persona;
+import static PROYECTO.SALIDA.main.cliNuevo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -48,7 +49,8 @@ public class Cliente extends Persona {
             String correo = entrada.nextLine();
             System.out.print("Ingrese la dirección del cliente: ");
             String direccion = entrada.nextLine();
-
+            
+            // Instancia de la clase cliente
             Cliente cli = new Cliente(nombre, apellido, correo, direccion);
 
             stmt.executeUpdate("INSERT INTO clientes (nombre, apellido, correo, direccion) values ('"
@@ -102,7 +104,6 @@ public class Cliente extends Persona {
                 System.out.println("No se encontro ningun cliente con el ID ingresado.");
                 return;
             }
-
             System.out.print("Ingrese el nombre del cliente: ");
             String nombre = entrada.nextLine();
             System.out.print("Ingrese el apellido del cliente: ");
@@ -120,6 +121,7 @@ public class Cliente extends Persona {
 
         } catch (SQLException sqlEx) {
             System.out.println("Error al modificar el cliente: " + sqlEx.getMessage());
+             
         }
     }
 

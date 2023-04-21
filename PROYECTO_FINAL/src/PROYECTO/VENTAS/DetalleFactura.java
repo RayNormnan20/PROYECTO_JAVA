@@ -1,4 +1,4 @@
-package PROYECTO;
+package PROYECTO.VENTAS;
 
 /**
  *

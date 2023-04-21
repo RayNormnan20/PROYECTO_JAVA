@@ -1,5 +1,6 @@
-package PROYECTO;
+package PROYECTO.CLASE_HIJA;
 
+import PROYECTO.CLASE_PADRE.Productos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,31 +9,21 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.sql.DriverManager;
 
-public class ProductoBase {
+public class ProductoBase extends Productos{
 
-    private String nombre;
+    
     private int idElectronicos;
     private int idAlimenti;
     private String descrip;
-    private float precio;
-    private int stock;
-
-    public ProductoBase(String nombre, int idElectronicos, int idAlimenti, String descrip, float precio, int stock) {
-        this.nombre = nombre;
+   
+    public ProductoBase(String nombre,int idElectronicos, int idAlimenti, String descrip, int stock, double precio ) {
+        super(nombre, stock, precio);
         this.idElectronicos = idElectronicos;
         this.idAlimenti = idAlimenti;
         this.descrip = descrip;
-        this.precio = precio;
-        this.stock = stock;
+        
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
     public int getIdElectronicos() {
         return idElectronicos;
@@ -57,23 +48,7 @@ public class ProductoBase {
     public void setDescrip(String descrip) {
         this.descrip = descrip;
     }
-
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-   
+  
     Connection conn = null;
 
     // Creamos una clase 

@@ -1,5 +1,6 @@
-package PROYECTO;
+package PROYECTO.VENTAS;
 
+import PROYECTO.VENTAS.DetalleFactura;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -24,7 +25,7 @@ public class Factura {
     private int idCliente;
     private float subtotal;
     private float total;
-    private float igv;
+    private static final float igv;
     private String fecha;
     private List<DetalleFactura> detalles;
 
@@ -32,7 +33,7 @@ public class Factura {
         this.idCliente = idCliente;
         this.subtotal = subtotal;
         this.total = total;
-        this.igv = igv;
+        Factura.igv = igv;
         this.fecha = fecha;
         this.detalles = new ArrayList<>();
     }

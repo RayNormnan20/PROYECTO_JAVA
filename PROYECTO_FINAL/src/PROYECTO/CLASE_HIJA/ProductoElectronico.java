@@ -1,4 +1,4 @@
-package PROYECTO;
+package PROYECTO.CLASE_HIJA;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +45,8 @@ public class ProductoElectronico {
             String modelo = entrada.next();
             System.out.print("Ingrese la potencia del producto: ");
             int potencia = entrada.nextInt();
-            entrada.nextLine(); // Consume el salto de línea pendiente
+            // Consume el salto de línea pendiente
+            entrada.nextLine(); 
 
             ProductoElectronico proElec = new ProductoElectronico(modelo, potencia);
             stmt.executeUpdate("INSERT INTO productos_electronicos (modelo, potencia) VALUES ('" + proElec.getModelo() + "', '" + proElec.getPotencia() + "');");

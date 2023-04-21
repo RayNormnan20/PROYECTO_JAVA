@@ -1,4 +1,4 @@
-package PROYECTO;
+package PROYECTO.VENTAS;
 
 /**
  *
@@ -126,6 +126,9 @@ public class ventas {
                     subtotal += subtotalProducto;
                     double igv = subtotal * 0.18f; // 18% 
                     total = subtotal + igv;
+                    
+                    // Redondeo de 2 decimales con Math
+                    total=Math.round(total * 100.0)/100.0;
 
                     stmt.executeUpdate("UPDATE productos_base SET stock = " + (stock - cantidad) + " WHERE idPro = " + idProducto);
                     stmt.executeUpdate("INSERT INTO detalle_factura (idFactura, idProducto, cantidad, precioUnitario) "

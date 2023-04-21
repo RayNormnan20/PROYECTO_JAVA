@@ -1,5 +1,11 @@
-package PROYECTO;
+package PROYECTO.SALIDA;
 
+import PROYECTO.CLASE_HIJA.ProductosAlimenticios;
+import PROYECTO.CLASE_HIJA.ProductoElectronico;
+import PROYECTO.CLASE_HIJA.ProductoBase;
+import PROYECTO.CLASE_HIJA.Cliente;
+import PROYECTO.VENTAS.Factura;
+import PROYECTO.VENTAS.ventas;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,7 +16,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import static PROYECTO.Factura.ReporteFacturas.generarReporte;
+import static PROYECTO.VENTAS.Factura.ReporteFacturas.generarReporte;
 import net.sf.jasperreports.engine.JRException;
 
 /**
