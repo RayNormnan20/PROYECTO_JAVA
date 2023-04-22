@@ -1,6 +1,5 @@
 package PROYECTO.VENTAS;
 
-import PROYECTO.VENTAS.DetalleFactura;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -8,9 +7,8 @@ import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
@@ -25,16 +23,17 @@ public class Factura {
     private int idCliente;
     private float subtotal;
     private float total;
+    //Es una constante
     public  final float IGV = 0;
     private String fecha;
-    private List<DetalleFactura> detalles;
+    
 
     public Factura(int idCliente, float subtotal, float total, String fecha) {
         this.idCliente = idCliente;
         this.subtotal = subtotal;
         this.total = total;
         this.fecha = fecha;
-        this.detalles = new ArrayList<>();
+       
     }
     
     
@@ -80,13 +79,7 @@ public class Factura {
         this.subtotal = subtotal;
     }
 
-    public List<DetalleFactura> getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(List<DetalleFactura> detalles) {
-        this.detalles = detalles;
-    }
+  
 
     public static void listaFacturaVentas(ResultSet rs, Statement stmt, Scanner entrada) {
         try {
@@ -157,7 +150,7 @@ public class Factura {
                 conn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto?"
                         + "user=root&password=12345678");
                 JasperPrint jasperPrint = JasperFillManager.fillReport("C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\REPORTE_FACTURAS.jasper", null, conn);
-                //JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\REPORTE_FACTURAS.pdf");
+                JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\REPORTE_FACTURAS.pdf");
                 System.out.println("Archivo creado correctamente");
                 JasperViewer jasperViewer = new JasperViewer(jasperPrint);
                 jasperViewer.setVisible(true);
@@ -188,7 +181,7 @@ public class Factura {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto?"
                     + "user=root&password=12345678");
             JasperPrint jasperPrint = JasperFillManager.fillReport("C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\FACTURA_VENTA.jasper", null, conn);
-            //JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\FacturaVentas.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\FACTURA_VENTA.pdf");
             System.out.println("Archivo creado correctamente");
             JasperViewer jasperViewer = new JasperViewer(jasperPrint);
             jasperViewer.setVisible(true);

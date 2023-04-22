@@ -11,8 +11,6 @@ import java.util.Scanner;
  */
 public class ProductoElectronico {
 
-    private static void menuPrincipal() {
-    }
 
     private String modelo;
     private int potencia;
@@ -105,7 +103,6 @@ public class ProductoElectronico {
             } else {
                 System.out.println("No existe un producto electrónico con el ID ingresado.");
             }
-            menuPrincipal();
         } catch (SQLException sqlEx) {
             System.out.println("Error al eliminar el producto electrónico: " + sqlEx.getMessage());
             System.out.println("SQLState: " + sqlEx.getSQLState());

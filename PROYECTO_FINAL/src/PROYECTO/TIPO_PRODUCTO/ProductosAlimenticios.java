@@ -11,8 +11,7 @@ import java.util.Scanner;
  */
 public class ProductosAlimenticios {
 
-    private static void menuPrincipal() {
-    }
+  
 
     private String fechaVencimiento;
     private String paisOrigen;
@@ -131,7 +130,6 @@ public class ProductosAlimenticios {
             } else {
                 System.out.println("No existe un producto alimenticio con el ID: " + idProAli + " ingresado.");
             }
-            menuPrincipal();
         } catch (SQLException sqlEx) {
             System.out.println("Error al eliminar el producto alimenticio " + sqlEx.getMessage());
             System.out.println("SQLState: " + sqlEx.getSQLState());

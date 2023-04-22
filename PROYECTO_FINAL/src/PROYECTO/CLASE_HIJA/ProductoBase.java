@@ -47,7 +47,7 @@ public class ProductoBase extends Productos {
         this.descrip = descrip;
     }
 
-    Connection conn = null;
+    public Connection conn = null;
 
     // Creamos una clase 
     public static float getPrecio(int idProducto) {

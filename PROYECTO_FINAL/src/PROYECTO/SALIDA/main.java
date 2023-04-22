@@ -29,10 +29,7 @@ public class main {
     public Statement stmt = null;
     public ResultSet rs = null;
     public static List<Cliente> cliNuevo = new ArrayList<>();
-    public static List<ProductoElectronico> proElectro = new ArrayList<>();
-    public static List<ProductoBase> proNuevo = new ArrayList<>();
-    public static List<ProductosAlimenticios> proAli = new ArrayList<>();
-    public static List<Factura> nuFac = new ArrayList<>();
+    
 
     public static void main(String[] args) throws ParseException, SQLException, JRException {
 
@@ -186,7 +183,7 @@ public class main {
                                                     idElectronicos = entrada.nextInt();
                                                     entrada.nextLine();
 
-                                                    // Verificar que el producto electrónico existe en la tabla de productos_electronicos
+                                                    // Verificar que el producto electro... existe
                                                     PreparedStatement ps = conn.prepareStatement("SELECT idPro FROM productos_electronicos WHERE idPro = ?");
                                                     ps.setInt(1, idElectronicos);
                                                     rs = ps.executeQuery();
@@ -289,7 +286,7 @@ public class main {
                         break;
 
                     case 2:
-                        ventas.hacerVentaSebas(rs, stmt, entrada);
+                        ventas.hacerVenta(rs, stmt, entrada);
                         Factura.generarReporteVentas();
                         break;
 
